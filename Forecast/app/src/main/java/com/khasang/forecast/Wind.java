@@ -62,4 +62,27 @@ public class Wind {
         return Direction.valueOf(direction);
     }
 
+    public static Direction stringToDirectionStatic(String direction) {
+        // TODO: stringToDirection(String direction)
+        Direction result = null;
+        if (direction.equalsIgnoreCase("N")) {
+            result = Direction.NORTH;
+        } else if (direction.equalsIgnoreCase("S")) {
+            result = Direction.SOUTH;
+        } else if (direction.equalsIgnoreCase("W")) {
+            result = Direction.WEST;
+        } else if (direction.equalsIgnoreCase("E")) {
+            result = Direction.EAST;
+        } else if (direction.equalsIgnoreCase("NW")) {
+            result = Direction.NORTHWEST;
+        } else if (direction.equalsIgnoreCase("NE")) {
+            result = Direction.NORTHEAST;
+        } else if (direction.equalsIgnoreCase("SW")) {
+            result = Direction.SOUTHWEST;
+        } else if (direction.equalsIgnoreCase("SE")) {
+            result = Direction.SOUTHEAST;
+        }
+        return result;
+    }
+
 }

@@ -92,4 +92,15 @@ public class Precipitation {
         return Type.valueOf(type);
     }
 
+    // TODO: Type stringToType
+    public static Type stringToTypeStatic(String type) {
+        Type type1 = null;
+        try {
+            type1 = Type.valueOf(type);
+        } catch (/*IllegalArgument*/Exception e) {
+            e.printStackTrace();
+        }
+        return type1;
+    }
+
 }
