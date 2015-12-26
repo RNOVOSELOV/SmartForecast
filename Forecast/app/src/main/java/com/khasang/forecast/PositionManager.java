@@ -2,6 +2,7 @@ package com.khasang.forecast;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.khasang.forecast.activities.WeatherActivity;
@@ -259,7 +260,14 @@ public class PositionManager {
      */
     public void updateWeather () {
         if (currPosition == null || !positionIsPresent(currPosition.getLocationName())) {
-            Toast.makeText(mActivity, R.string.update_error_location_not_found, Toast.LENGTH_SHORT).show();
+            // fix: была ошибка при вызове метода из другого потока
+//            Toast.makeText(mActivity, R.string.update_error_location_not_found, Toast.LENGTH_SHORT).show();
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mActivity, R.string.update_error_location_not_found, Toast.LENGTH_SHORT).show();
+                }
+            });
             return;
         }
         if (isNetworkAvailable(mActivity)) {
