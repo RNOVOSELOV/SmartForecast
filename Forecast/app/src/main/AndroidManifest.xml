@@ -32,6 +32,22 @@
         <activity android:name=".activities.CityPickerActivity"
             android:screenOrientation="portrait"/>
 
+        <receiver android:name=".widget.WeatherWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.khasang.forecast.widget.service_start" />
+                <action android:name="com.khasang.forecast.widget.update_weather" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.UpdateService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
