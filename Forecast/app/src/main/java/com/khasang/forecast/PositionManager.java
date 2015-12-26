@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.khasang.forecast.activities.WeatherActivity;
 import com.khasang.forecast.sqlite.SQLiteProcessData;
+import com.khasang.forecast.widget.WeatherWidget;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -297,6 +298,12 @@ public class PositionManager {
                 entry.setValue(AppUtils.formatWeather(entry.getValue(), temperatureMetric, speedMetric, pressureMetric));
             }
             mActivity.updateInterface(rType, weather);
+
+            // todo: Widget - пока разместил обновление текущей погоды на виджете тут...
+            if (rType == WeatherStation.ResponseType.CURRENT){
+                WeatherWidget.setWeather(MyApplication.getAppContext(), currPosition.getLocationName(), weather);
+            }
+
         }
     }
 
