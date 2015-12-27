@@ -6,9 +6,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import com.khasang.forecast.Position;
 import com.khasang.forecast.Weather;
 import com.khasang.forecast.R;
 import com.khasang.forecast.activities.WeatherActivity;
@@ -27,9 +29,12 @@ import java.util.Map;
 // открывать активити при нажатии на кнопку
 // возможно, стоит добавить конфигурационный активити с выбором города (чтобы на каждом виджете выбирать свой)
 // сделать смену единиц измерения температуры
+    // TODO: назначить обработчики для кнопки выбора города.
 
 public class WeatherWidget extends AppWidgetProvider {
     private String temp_measure = "°C"; // TODO: сделать смену единиц измерения температуры
+
+    private Position currPosition;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -39,6 +44,20 @@ public class WeatherWidget extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
         }
     }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        // Удаляем Preferences
+        SharedPreferences.Editor editor = context.getSharedPreferences(
+                WidgetConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE).edit();
+        for (int widgetID : appWidgetIds) {
+            editor.remove(WidgetConfigActivity.WIDGET_CURRENT_POSITION + widgetID);
+            editor.remove(WidgetConfigActivity.WIDGET_COUNT + widgetID);
+        }
+        editor.commit();
+    }
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -57,7 +76,7 @@ public class WeatherWidget extends AppWidgetProvider {
                         AppWidgetManager.EXTRA_APPWIDGET_ID,
                         AppWidgetManager.INVALID_APPWIDGET_ID);
 
-                city = extras.getString(Weather2Extra.KEY_CITY);
+//                city = extras.getString(Weather2Extra.KEY_CITY);
                 weather = Weather2Extra.getWeatherFromExtra(extras);
             }
 //            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -75,18 +94,21 @@ public class WeatherWidget extends AppWidgetProvider {
             //update all of the widgets
             for (int widgetId : allWidgetIds) {
                 //update the widget with any change we just made
-                updateAppWidget(context, appWidgetManager, widgetId, city, weather);
+                updateAppWidget(context, appWidgetManager, widgetId, /*city, */weather);
 
             }
         }
     }
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        updateAppWidget(context, appWidgetManager, appWidgetId, null, null);
+        updateAppWidget(context, appWidgetManager, appWidgetId, /*null, */null);
     }
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId
-            , String city, Weather weather) {
+            , /*String city, */Weather weather) {
+        SharedPreferences sp = context.getSharedPreferences(
+                WidgetConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE);
+
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.weather_widget);
 
         // запрос на обновление
@@ -96,9 +118,13 @@ public class WeatherWidget extends AppWidgetProvider {
         PendingIntent pIntent = PendingIntent.getService(context, 0, intent, 0);
         remoteViews.setOnClickPendingIntent(R.id.id_update, pIntent);
 
+
+        String city = sp.getString(WidgetConfigActivity.WIDGET_CURRENT_POSITION
+                + appWidgetId, null);
         if (city != null) {
             remoteViews.setTextViewText(R.id.tv_city, city);
         }
+
         if (weather != null) {
             // TODO: привести в порядок, по аналогии с активити
             String precipitationString = weather.getPrecipitation().toString();

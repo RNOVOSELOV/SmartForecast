@@ -69,7 +69,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private Animation animTrans_plus1;
     private Animation fallingUp;
 
-    private final int CHOOSE_CITY = 1;
+//    private final int CHOOSE_CITY = 1;
+    public static final int CHOOSE_CITY = 1; // понадобилось так же в WidgetConfigActivity
     public Context context;
 
     private SwipeRefreshLayout swipeRefreshLayout;

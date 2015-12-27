@@ -44,4 +44,6 @@
     <string name="infoTV">Add a city \nto display the weather forecast.</string>
     <string name="incorrect_city_error">Некорректное название города</string>
 
+    <string name="ok">Ok</string>
+
 </resources>
