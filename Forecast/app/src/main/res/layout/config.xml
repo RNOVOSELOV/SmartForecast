@@ -9,8 +9,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-        android:layout_toStartOf="@+id/cityPickerBnt"
-        android:layout_toLeftOf="@+id/cityPickerBnt">
+        android:layout_toStartOf="@+id/btnCityPicker"
+        android:layout_toLeftOf="@+id/btnCityPicker">
     </TextView>
     <Button
             android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
     </Button>
 
     <ImageButton
-        android:id="@+id/cityPickerBnt"
+        android:id="@+id/btnCityPicker"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@null"

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.khasang.forecast.Logger;
+import com.khasang.forecast.Position;
 import com.khasang.forecast.PositionManager;
 import com.khasang.forecast.R;
 import com.khasang.forecast.activities.CityPickerActivity;
@@ -27,6 +28,7 @@ public class WidgetConfigActivity extends Activity {
 
     int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
     Intent resultValue;
+    int cityId;
     SharedPreferences sp;
     TextView tvCityName;
 
@@ -56,16 +58,25 @@ public class WidgetConfigActivity extends Activity {
 
         sp = getSharedPreferences(WIDGET_PREF, MODE_PRIVATE);
         tvCityName = (TextView) findViewById(R.id.tv_city_name);
-        tvCityName.setText(sp.getString(WIDGET_CURRENT_POSITION + widgetID, "HH:mm:ss"));
+        // TODO: ...
 
-//        int cnt = sp.getInt(WidgetConfigActivity.WIDGET_COUNT + widgetID, -1);
-//        if (cnt == -1) sp.edit().putInt(WIDGET_COUNT + widgetID, 0);
+        try {
+            cityId = sp.getInt(WidgetConfigActivity.WIDGET_CURRENT_POSITION
+                    + widgetID, -1);
+            Position city = PositionManager.getInstance().getPosition(cityId);
+            String cityName = city.getLocationName();
+            tvCityName.setText(cityName); // TODO: можно брать текущий город
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    @Override
     public void onClickOk(View v){
-        sp.edit().putString(WIDGET_CURRENT_POSITION + widgetID, tvCityName.getText().toString()).commit();
-//        WeatherWidget.updateWidget(this, AppWidgetManager.getInstance(this), widgetID); //
+//        sp.edit().putString(WIDGET_CURRENT_POSITION + widgetID, tvCityName.getText().toString()).commit();
+//        int cityId = tvCityName.getText().toString();
+        sp.edit().putInt(WIDGET_CURRENT_POSITION + widgetID, cityId).commit();
+        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, cityId, null); //
         setResult(RESULT_OK, resultValue);
         finish();
     }
@@ -80,10 +91,11 @@ public class WidgetConfigActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == WeatherActivity.CHOOSE_CITY) {
             if (resultCode == RESULT_OK) {
-                String newCity = data.getStringExtra(CityPickerActivity.CITY_PICKER_TAG);
-                tvCityName.setText(newCity.split(",")[0]);
-                Logger.println(TAG, newCity);
-//                PositionManager.getInstance().setCurrentPosition(newCity);
+                String cityName = data.getStringExtra(CityPickerActivity.CITY_PICKER_TAG);
+                cityId = PositionManager.getInstance().getPosition(cityName).getCityID(); // todo ???
+                tvCityName.setText(cityName.split(",")[0]);
+                Logger.println(TAG, cityName);
+//                PositionManager.getInstance().setCurrentPosition(cityName);
 //                PositionManager.getInstance().saveCurrPosition();
 //                onRefresh();
 //                syncBtn.setVisibility(View.VISIBLE);

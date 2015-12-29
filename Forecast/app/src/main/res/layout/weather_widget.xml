@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true" />
         <!--android:layout_alignParentStart="true"--> <!--/>-->
     <ImageButton
-        android:id="@+id/cityPickerBnt"
+        android:id="@+id/btnCityPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"

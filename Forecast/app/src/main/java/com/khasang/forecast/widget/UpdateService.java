@@ -3,11 +3,14 @@ package com.khasang.forecast.widget;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
 import com.khasang.forecast.PositionManager;
+import com.khasang.forecast.Weather;
 
 /**
  * Service для обновления погоды в фоне
@@ -48,14 +51,27 @@ public class UpdateService extends IntentService {
         if (action.equalsIgnoreCase(MY_ACTION_SERVICE_START)) {
             myServiceStart();
         } else if (action.equalsIgnoreCase(MY_ACTION_UPDATE)) {
-            askForUpdate();
+            askForUpdate(intent);
         }
 
     }
 
-    private void askForUpdate() {
+    private void askForUpdate(Intent intent) {
         // TODO: askForUpdate()
-        PositionManager.getInstance().updateWeather();
+        Bundle extras = intent.getExtras();
+        int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        int cityId = -1;
+//        Weather weather = null;
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+
+//                cityId = extras.getString(Weather2Extra.KEY_CITY);
+                cityId = extras.getInt(Weather2Extra.KEY_CITY);
+
+            PositionManager.getInstance().updateWeather(getApplicationContext(), mAppWidgetId, cityId);
+        }
 
 //        Weather weather = new Weather(36.6, 40.0, 17, new Wind(Wind.Direction.NORTHWEST, 10.0), new Precipitation(Precipitation.Type.CLOUDS));
 //        weather.setDescription("замечательняяшая погода!");
@@ -76,7 +92,7 @@ public class UpdateService extends IntentService {
             }
 
             // TODO: запросить обновление погоды
-            askForUpdate();
+//            askForUpdate();
             // посылаем промежуточные данные
 //            Intent intentUpdate = new Intent();
 //            intentUpdate.setAction(ACTION_UPDATE);

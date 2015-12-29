@@ -109,7 +109,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initFields() {
         city = (TextView) findViewById(R.id.city);
-        cityPickerBtn = (ImageButton) findViewById(R.id.cityPickerBnt);
+        cityPickerBtn = (ImageButton) findViewById(R.id.btnCityPicker);
         temperature = (TextView) findViewById(R.id.temperature);
         description = (TextView) findViewById(R.id.precipitation);
         pressure = (TextView) findViewById(R.id.pressure);
@@ -202,7 +202,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.city:
                 startActivityForResult(new Intent(this, CityPickerActivity.class), CHOOSE_CITY);
                 break;
-            case R.id.cityPickerBnt:
+            case R.id.btnCityPicker:
                 startActivityForResult(new Intent(this, CityPickerActivity.class), CHOOSE_CITY);
                 break;
             case R.id.temperature:
