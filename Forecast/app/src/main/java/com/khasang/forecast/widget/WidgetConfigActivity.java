@@ -76,7 +76,7 @@ public class WidgetConfigActivity extends Activity {
 //        sp.edit().putString(WIDGET_CURRENT_POSITION + widgetID, tvCityName.getText().toString()).commit();
 //        int cityId = tvCityName.getText().toString();
         sp.edit().putInt(WIDGET_CURRENT_POSITION + widgetID, cityId).commit();
-        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, cityId, null); //
+        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, cityId, null, true); //
         setResult(RESULT_OK, resultValue);
         finish();
     }

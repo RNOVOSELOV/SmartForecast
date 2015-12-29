@@ -339,7 +339,7 @@ public class PositionManager {
 
             // todo: Widget - пока разместил обновление текущей погоды на виджете тут...
             if (rType == WeatherStation.ResponseType.CURRENT){
-                WeatherWidget.setWeather(MyApplication.getAppContext(), currPosition.getLocationName(), weather);
+                WeatherWidget.setWeather(MyApplication.getAppContext(), cityId, weather);
             }
 
         }

@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class WeatherWidget extends AppWidgetProvider {
     private static String TAG = WeatherWidget.class.getSimpleName();
+    private static HashMap<Integer, Position> widgetToCityMap = new HashMap<Integer, Position>();
+
     private String temp_measure = "°C"; // TODO: сделать смену единиц измерения температуры
 
     private Position currPosition;
@@ -67,20 +69,33 @@ public class WeatherWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         // TODO: разобраться!!!
+        // TODO:
         String action = intent.getAction();
-        if (action.equalsIgnoreCase(UpdateService.MY_ACTION_UPDATE)) {
+//        action.equalsIgnoreCase(AppWidgetManager.)
+        if (action.equalsIgnoreCase(UpdateService.MY_ACTION_UPDATE)
+                || action.equalsIgnoreCase(AppWidgetManager.ACTION_APPWIDGET_DELETED)) {
             // извлекаем ID экземпляра
             int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
             Bundle extras = intent.getExtras();
-            String city = null;
+            int cityId = -1;
             Weather weather = null;
             if (extras != null) {
                 mAppWidgetId = extras.getInt(
                         AppWidgetManager.EXTRA_APPWIDGET_ID,
                         AppWidgetManager.INVALID_APPWIDGET_ID);
 
-//                city = extras.getString(Weather2Extra.KEY_CITY);
-                weather = Weather2Extra.getWeatherFromExtra(extras);
+                if (action.equalsIgnoreCase(UpdateService.MY_ACTION_UPDATE)) {
+                    // добавляем в map все подряд виджеты (дублей не будет)
+                    Position position = PositionManager.getInstance().getPosition(cityId);
+                    if (position != null) {
+                        widgetToCityMap.put(mAppWidgetId, position);
+                    }
+                    cityId = extras.getInt(Weather2Extra.KEY_CITY);
+                    weather = Weather2Extra.getWeatherFromExtra(extras);
+                } else if (action.equalsIgnoreCase(AppWidgetManager.ACTION_APPWIDGET_DELETED)) {
+                    // удаляемые виджеты - удаляем из map
+                    widgetToCityMap.remove(mAppWidgetId);
+                }
             }
 //            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 //                city = extras.getFloat(MyIntentService.KEY_CITY);
@@ -97,18 +112,23 @@ public class WeatherWidget extends AppWidgetProvider {
             //update all of the widgets
             for (int widgetId : allWidgetIds) {
                 //update the widget with any change we just made
-                updateAppWidget(context, appWidgetManager, widgetId);
+                updateAppWidget(context, appWidgetManager, widgetId, cityId, weather, false);
 
             }
         }
     }
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        updateAppWidget(context, appWidgetManager, appWidgetId, -1, null);
+        updateAppWidget(context, appWidgetManager, appWidgetId, -1, null, false);
     }
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId
-            , int cityId, Weather weather) {
+            , int cityId, Weather weather, boolean updateCity) {
+        // TODO: если cityId не соответствует значению в widgetToCityMap, пропускаем (чтобы не обновлять виджеты с другим городом)
+        if (updateCity) {
+            Position position1 = PositionManager.getInstance().getPosition(cityId);
+            widgetToCityMap.put(Integer.valueOf(appWidgetId), position1);
+        }
         SharedPreferences sp = context.getSharedPreferences(
                 WidgetConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE);
 
@@ -119,29 +139,33 @@ public class WeatherWidget extends AppWidgetProvider {
 //                + appWidgetId, null);
 //        int cityId = sp.getInt(WidgetConfigActivity.WIDGET_CURRENT_POSITION
 //                + appWidgetId, -1);
-        if (cityId > -1) {
-            Position city = PositionManager.getInstance().getPosition(cityId);
-            String cityName = city.getLocationName();
-            if (cityName != null) {
-                remoteViews.setTextViewText(R.id.tv_city, cityName);
+        // город
+        Position position = widgetToCityMap.get(Integer.valueOf(appWidgetId));
+        if (updateCity || (position != null && position.getCityID() == cityId)) {
+            if (cityId > -1) { // ???
+//                Position city = PositionManager.getInstance().getPosition(cityId);
+                String cityName = position.getLocationName();
+                if (cityName != null) {
+                    remoteViews.setTextViewText(R.id.tv_city, cityName);
+                }
             }
-        }
 
-        if (weather != null) {
-            // TODO: привести в порядок, по аналогии с активити
-            String precipitationString = weather.getPrecipitation().toString();
-            remoteViews.setTextViewText(R.id.tv_precipitation, precipitationString);
-            String windString = "Ветер " + weather.getWindDirection().getDirectionString() + " "
-                    + weather.getWindPower() + "м/с";
-            remoteViews.setTextViewText(R.id.tv_wind, windString);
-            String humidityString = "Влажность " + weather.getHumidity() + "%";
-            remoteViews.setTextViewText(R.id.tv_humidity, humidityString);
+            if (weather != null) {
+                // TODO: привести в порядок, по аналогии с активити
+                String precipitationString = weather.getPrecipitation().toString();
+                remoteViews.setTextViewText(R.id.tv_precipitation, precipitationString);
+                String windString = "Ветер " + weather.getWindDirection().getDirectionString() + " "
+                        + weather.getWindPower() + "м/с";
+                remoteViews.setTextViewText(R.id.tv_wind, windString);
+                String humidityString = "Влажность " + weather.getHumidity() + "%";
+                remoteViews.setTextViewText(R.id.tv_humidity, humidityString);
 
-            // todo
+                // todo
 //            String temperatureString = String.format("%.0f%s", weather.getTemperature(), temp_measure);
 //            remoteViews.setTextViewText(R.id.tv_temperature, temperatureString);
 
 
+            }
         }
         // Конфигурационный экран
         PendingIntent pIntentOpenConfig = getPendingIntentOpenConfig(context, appWidgetId, cityId);
@@ -171,7 +195,7 @@ public class WeatherWidget extends AppWidgetProvider {
         return PendingIntent.getActivity(ctx, appWidgetId, intent, 0);
     }
 
-    public static void setWeather(Context context, String city, Map<Calendar, Weather> calendarWeatherMap) {
+    public static void setWeather(Context context, int cityId, Map<Calendar, Weather> calendarWeatherMap) {
         // формируем и отправляем Intent виджетам
         HashMap.Entry<Calendar, Weather> firstEntry = (Map.Entry<Calendar, Weather>) calendarWeatherMap.entrySet().iterator().next();
         Weather weather = firstEntry.getValue();
@@ -180,13 +204,14 @@ public class WeatherWidget extends AppWidgetProvider {
             Log.i(TAG, "Weather is null!");
             return;
         }
-
+        // отправляем результат виджетам
         Intent intent = new Intent(context, WeatherWidget.class);
         intent.setAction(UpdateService.MY_ACTION_UPDATE);
         Weather2Extra.putWeatherToExtra(intent, weather)
-                .putExtra(Weather2Extra.KEY_CITY, city) // TODO: переделать city на cityId
+                .putExtra(Weather2Extra.KEY_CITY, cityId)
                 .putExtra(Weather2Extra.KEY_DATE, date);
         int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WeatherActivity.class));
+        // TODO: пока различать погоду для виджетов будем по cityId, не по id виджетов
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         context.sendBroadcast(intent);
     }
