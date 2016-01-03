@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.khasang.forecast.PositionManager;
-import com.khasang.forecast.Weather;
 
 /**
  * Service для обновления погоды в фоне
@@ -25,8 +24,6 @@ public class UpdateService extends IntentService {
     private NotificationManager mNotificationManager;
     private Notification mNotification;
     private Handler handler;
-//    private MyBroadcastReceiver myBroadcastReceiver;
-
 
     boolean success;
     boolean stopped;
@@ -67,21 +64,16 @@ public class UpdateService extends IntentService {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
-//                cityId = extras.getString(Weather2Extra.KEY_CITY);
-                cityId = extras.getInt(Weather2Extra.KEY_CITY);
-
+                cityId = extras.getInt(Weather2Extra.KEY_CURRENT_POSITION_ID);
+            // TODO: если активити нет, ЕГГОР
             PositionManager.getInstance().updateWeather(getApplicationContext(), mAppWidgetId, cityId);
         }
-
-//        Weather weather = new Weather(36.6, 40.0, 17, new Wind(Wind.Direction.NORTHWEST, 10.0), new Precipitation(Precipitation.Type.CLOUDS));
-//        weather.setDescription("замечательняяшая погода!");
-//        WeatherWidget.setWeather(getApplicationContext(), "Кирегаси", weather);
     }
 
     private void myServiceStart() {
         for (int i = 0; !stopped; i++) {
             try {
-                Thread.sleep(5000); // TODO: период обновления
+                Thread.sleep(50000); // TODO: период обновления
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -164,14 +156,4 @@ public class UpdateService extends IntentService {
         super.onDestroy();
 
     }
-
-    //    public class MyBroadcastReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-////            String result = intent
-////                    .getStringExtra(MyIntentService.EXTRA_KEY_OUT);
-////            tvResult1.setText(result);
-//        }
-//    }
 }

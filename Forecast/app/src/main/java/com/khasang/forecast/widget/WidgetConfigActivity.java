@@ -1,7 +1,8 @@
 package com.khasang.forecast.widget;
 
 /**
- * Created by 1 on 18.12.2015.
+ * Created by baradist on 18.12.2015.
+ * // TODO: пока не используется
  */
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -9,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.khasang.forecast.Logger;
@@ -23,7 +23,8 @@ public class WidgetConfigActivity extends Activity {
     private final String TAG = this.getClass().getSimpleName();
 
     public final static String WIDGET_PREF = "widget_pref";
-    public final static String WIDGET_CURRENT_POSITION = "widget_current_position_";
+//    public final static String KEY_CURRENT_POSITION = "widget_current_position_";
+//    public final static String KEY_CURRENT_POSITION_ID = "widget_current_position_id";
     public final static String WIDGET_COUNT = "widget_count_";
 
     int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -61,8 +62,8 @@ public class WidgetConfigActivity extends Activity {
         // TODO: ...
 
         try {
-            cityId = sp.getInt(WidgetConfigActivity.WIDGET_CURRENT_POSITION
-                    + widgetID, -1);
+//            cityId = sp.getInt(WidgetConfigActivity.KEY_CURRENT_POSITION + widgetID, -1);
+            cityId = sp.getInt(Weather2Extra.KEY_CURRENT_POSITION + widgetID, -1);
             Position city = PositionManager.getInstance().getPosition(cityId);
             String cityName = city.getLocationName();
             tvCityName.setText(cityName); // TODO: можно брать текущий город
@@ -73,10 +74,10 @@ public class WidgetConfigActivity extends Activity {
 
 //    @Override
     public void onClickOk(View v){
-//        sp.edit().putString(WIDGET_CURRENT_POSITION + widgetID, tvCityName.getText().toString()).commit();
-//        int cityId = tvCityName.getText().toString();
-        sp.edit().putInt(WIDGET_CURRENT_POSITION + widgetID, cityId).commit();
-        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, cityId, null, true); //
+//        sp.edit().putInt(KEY_CURRENT_POSITION + widgetID, cityId).commit();
+        sp.edit().putInt(Weather2Extra.KEY_CURRENT_POSITION + widgetID, cityId).commit();
+//        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, cityId, null, true); //
+        WeatherWidget.updateAppWidget(this, AppWidgetManager.getInstance(this), widgetID, null, null, null); //
         setResult(RESULT_OK, resultValue);
         finish();
     }

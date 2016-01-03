@@ -19,8 +19,10 @@ public class Weather2Extra {
     public static final String KEY_WEATHER_TEMPERATURE = "key_weather_temperature";
     public static final String KEY_WEATHER_PRESSURE = "key_weather_pressure";
     public static final String KEY_WEATHER_PRECIPITATION = "key_weather_precipitation";
-    public static final String KEY_CITY = "key_city";
     public static final String KEY_DATE = "key_date";
+    public final static String KEY_CURRENT_POSITION = "key_current_position_";
+    public final static String KEY_CURRENT_POSITION_ID = "key_current_position_id";
+
 
     public static Intent putWeatherToExtra(Intent intent, Weather weather) {
         Bundle extra = intent.getBundleExtra("name");

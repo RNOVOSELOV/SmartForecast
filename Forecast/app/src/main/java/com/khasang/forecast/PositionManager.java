@@ -288,7 +288,8 @@ public class PositionManager {
      * Метод, вызывемый виджетом, для обновления текущей погоды
      */
     public void updateWeather (Context context, int widgetId, int cityId) {
-        Position widgetPosition = getPosition(cityId);
+//        Position widgetPosition = getPosition(cityId);
+        Position widgetPosition = currPosition;
         if (widgetPosition == null/* || !positionIsPresent(widgetPosition.getLocationName())*/) {
             // fix: была ошибка при вызове метода из другого потока
 //            Toast.makeText(mActivity, R.string.update_error_location_not_found, Toast.LENGTH_SHORT).show();
@@ -302,13 +303,13 @@ public class PositionManager {
         }
         if (isNetworkAvailable(context)) {
             currStation.updateWeather(widgetPosition.getCityID(), widgetPosition.getCoordinate());
-//            currStation.updateHourlyWeather(currPosition.getCityID(), currPosition.getCoordinate());
-//            currStation.updateWeeklyWeather(currPosition.getCityID(), currPosition.getCoordinate());
         } else {
-//            mActivity.updateInterface(WeatherStation.ResponseType.CURRENT, getCurrentWeatherFromDB(currStation.getServiceType(), currPosition.getLocationName(), Calendar.getInstance()));
-//            mActivity.updateInterface(WeatherStation.ResponseType.HOURLY, getHourlyWeatherFromDB(currStation.getServiceType(), currPosition.getLocationName(), Calendar.getInstance()));
-//            mActivity.updateInterface(WeatherStation.ResponseType.DAILY, getDailyWeatherFromDB(currStation.getServiceType(), currPosition.getLocationName(), Calendar.getInstance()));
-//            Toast.makeText(mActivity, R.string.update_error_net_not_availble, Toast.LENGTH_SHORT).show();
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mActivity, R.string.update_error_net_not_availble, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
