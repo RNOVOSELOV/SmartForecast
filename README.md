@@ -13,3 +13,8 @@
 <a href="https://play.google.com/store/apps/details?id=com.khasang.forecast">
 <img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" />
 </a>
+
+
+<a href="https://play.google.com/store/apps/details?id=com.khasang.forecast">
+<img alt="Get it on Google Play" src="https://github.com/khasang/SmartForecast/blob/github/Auxiliary_files/logo.svg" />
+</a>
