@@ -16,5 +16,5 @@
 
 
 <a href="https://play.google.com/store/apps/details?id=com.khasang.forecast">
-<img alt="Get it on Google Play" src="https://github.com/khasang/SmartForecast/blob/github/Auxiliary_files/logo.svg" />
+<img src="http://github.com/khasang/SmartForecast/blob/github/Auxiliary_files/logo.svg" />
 </a>
