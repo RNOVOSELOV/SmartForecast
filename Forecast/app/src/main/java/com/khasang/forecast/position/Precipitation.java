@@ -1,6 +1,8 @@
 package com.khasang.forecast.position;
 
+import com.khasang.forecast.AppUtils;
 import com.khasang.forecast.R;
+
 
 /**
  * Created by Veda on 24.11.15.
@@ -12,27 +14,32 @@ public class Precipitation {
     public static enum Type {
         THUNDERSTORM {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_thunderstorm;
+                //return R.drawable.ic_thunderstorm;
+                return AppUtils.getWeaherIcon(THUNDERSTORM);
             }
         },
         DRIZZLE {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_drizzle;
+                //return R.drawable.ic_drizzle;
+                return AppUtils.getWeaherIcon(DRIZZLE);
             }
         },
         RAIN {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_rain;
+                //return R.drawable.ic_rain;
+                return AppUtils.getWeaherIcon(RAIN);
             }
         },
         SNOW {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_snow;
+                //return R.drawable.ic_snow;
+                return AppUtils.getWeaherIcon(SNOW);
             }
         },
         ATMOSPHERE {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_fog;
+                //return R.drawable.ic_fog;
+                return AppUtils.getWeaherIcon(ATMOSPHERE);
             }
         },
         CLEAR {
@@ -46,12 +53,14 @@ public class Precipitation {
         },
         CLOUDS {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_cloud;
+                //return R.drawable.ic_cloud;
+                return AppUtils.getWeaherIcon(CLOUDS);
             }
         },
         EXTREME {
             public int getIconResId(boolean isDay) {
-                return R.drawable.ic_extreme;
+                //return R.drawable.ic_extreme;
+                return AppUtils.getWeaherIcon(EXTREME);
             }
         },
         ADDITIONAL {

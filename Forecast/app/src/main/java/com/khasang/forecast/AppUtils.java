@@ -525,4 +525,30 @@ public class AppUtils {
                     + context.getString(R.string.tomorrow).toLowerCase();
         }
     }
+
+
+    public static int getWeaherIcon(Precipitation.Type iconName) {
+        switch (iconName) {
+            case THUNDERSTORM:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(0);
+            case DRIZZLE:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(1);
+            case RAIN:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(2);
+            case SNOW:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(3);
+            case ATMOSPHERE:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(4);
+            //TODO SUN-MOON
+            case CLEAR:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(5);
+     /*       case CLEAR:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(6);*/
+            case CLOUDS:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(7);
+            case EXTREME:
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(8);
+        }
+        return 0;
+    }
 }
