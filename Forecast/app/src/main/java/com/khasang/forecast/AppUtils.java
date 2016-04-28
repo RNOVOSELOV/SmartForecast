@@ -529,28 +529,38 @@ public class AppUtils {
     }
 
     @SuppressWarnings("ResourceType")
-    public static int getWeaherIcon(Precipitation.Type iconName) {
+    public static int getWeaherIcon(Precipitation.Type iconName, boolean isDay) {
+        int icon = 0;
         switch (iconName) {
             case THUNDERSTORM:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(0, 0);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(0, 0);
+                break;
             case DRIZZLE:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(1, 1);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(1, 1);
+                break;
             case RAIN:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(2, 2);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(2, 2);
+                break;
             case SNOW:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(3, 3);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(3, 3);
+                break;
             case ATMOSPHERE:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(4, 4);
-            //TODO SUN-MOON
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(4, 4);
+                break;
             case CLEAR:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(5, 5);
-     /*       case CLEAR:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(6);*/
+                if(isDay) {
+                    icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(5, 5);
+                } else {
+                    icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(6, 6);
+                }
+                break;
             case CLOUDS:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(7, 7);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(7, 7);
+                break;
             case EXTREME:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(8, 8);
+                icon = MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(8, 8);
+                break;
         }
-        return 0;
+        return icon;
     }
 }

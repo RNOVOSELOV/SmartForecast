@@ -15,52 +15,53 @@ public class Precipitation {
         THUNDERSTORM {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_thunderstorm;
-                return AppUtils.getWeaherIcon(THUNDERSTORM);
+                return AppUtils.getWeaherIcon(THUNDERSTORM, isDay);
             }
         },
         DRIZZLE {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_drizzle;
-                return AppUtils.getWeaherIcon(DRIZZLE);
+                return AppUtils.getWeaherIcon(DRIZZLE, isDay);
             }
         },
         RAIN {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_rain;
-                return AppUtils.getWeaherIcon(RAIN);
+                return AppUtils.getWeaherIcon(RAIN, isDay);
             }
         },
         SNOW {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_snow;
-                return AppUtils.getWeaherIcon(SNOW);
+                return AppUtils.getWeaherIcon(SNOW, isDay);
             }
         },
         ATMOSPHERE {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_fog;
-                return AppUtils.getWeaherIcon(ATMOSPHERE);
+                return AppUtils.getWeaherIcon(ATMOSPHERE, isDay);
             }
         },
         CLEAR {
             public int getIconResId(boolean isDay) {
-                if (isDay) {
+                return AppUtils.getWeaherIcon(CLEAR, isDay);
+            /*    if (isDay) {
                     return R.drawable.ic_sun;
                 } else {
                     return R.drawable.ic_moon;
-                }
+                }*/
             }
         },
         CLOUDS {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_cloud;
-                return AppUtils.getWeaherIcon(CLOUDS);
+                return AppUtils.getWeaherIcon(CLOUDS, isDay);
             }
         },
         EXTREME {
             public int getIconResId(boolean isDay) {
                 //return R.drawable.ic_extreme;
-                return AppUtils.getWeaherIcon(EXTREME);
+                return AppUtils.getWeaherIcon(EXTREME, isDay);
             }
         },
         ADDITIONAL {
