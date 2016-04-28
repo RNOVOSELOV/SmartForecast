@@ -2,6 +2,8 @@ package com.khasang.forecast;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.StyleRes;
+import android.support.annotation.StyleableRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -526,28 +528,28 @@ public class AppUtils {
         }
     }
 
-
+    @SuppressWarnings("ResourceType")
     public static int getWeaherIcon(Precipitation.Type iconName) {
         switch (iconName) {
             case THUNDERSTORM:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(0);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(0, 0);
             case DRIZZLE:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(1);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(1, 1);
             case RAIN:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(2);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(2, 2);
             case SNOW:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(3);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(3, 3);
             case ATMOSPHERE:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(4);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(4, 4);
             //TODO SUN-MOON
             case CLEAR:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(5);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(5, 5);
      /*       case CLEAR:
                 return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(6);*/
             case CLOUDS:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(7);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(7, 7);
             case EXTREME:
-                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getIndex(8);
+                return MyApplication.getAppContext().getResources().obtainTypedArray(R.array.default_icons).getResourceId(8, 8);
         }
         return 0;
     }
